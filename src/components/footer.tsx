@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import "../styles/footer.css";
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 
 
 export default function Footer() {
@@ -22,7 +23,7 @@ export default function Footer() {
                 <div className="footer-column">
                     <h4>PRODUCT</h4>
                     <ul>
-                        <li><a href="#">Generate Roadmap</a></li>
+                        <li><SignInButton><a href="#">Generate Roadmap</a></SignInButton></li>
                         <li><a href="#how-works">How It Works</a></li>
                         <li><a href="#rdmap-preview">Preview</a></li>
                         <li><a href="/login">Login</a></li>

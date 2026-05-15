@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import "../styles/how-it-works.css";
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 
 
 export default function Home() {
@@ -36,7 +37,9 @@ export default function Home() {
                 </div>
                 <div className="section-cta">
                     <p>Ready to find your path?</p>
+                    <SignInButton>
                     <button>Generate My Roadmap →</button>
+                    </SignInButton>
                 </div>
             </div>
         </div>

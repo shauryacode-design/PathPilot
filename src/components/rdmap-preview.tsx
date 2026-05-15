@@ -2,6 +2,7 @@
 import Image from "next/image";
 import "../styles/rdmap-preview.css";
 import { useRef } from 'react';
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 
 
 
@@ -64,7 +65,9 @@ export default function Home() {
                         <p>Adapts to your pace and goals</p>
                     </div>
                     <div className="preview-CTA">
-                        <button>Generate My Roadmap →</button>
+                        <SignInButton>
+                            <button>Generate My Roadmap →</button>
+                        </SignInButton>
                     </div>
                 </div>
 
