@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.footer-section {
+    background-color:#D9CEEE;
+    padding: 80px 60px 40px;
+    width: 100%;
+    color: #1a0f3d;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 50px;
+    margin-bottom: 60px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    /* background-color: red; */
+    width: 40%;
+}
+
+.footer-brand h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+    font-family: "Orbitron", sans-serif;
+    color: #591ba0;
+    letter-spacing: 2px;
+    transition: 0.3s ease;
+}
+
+.footer-brand h2:hover {
+    color: #9B59D4;
+    transform: translateX(5px);
+}
+
+.footer-brand p {
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(80, 60, 120, 0.8);
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    width: 60%;
+}
+
+.social-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+}
+.social-links img{
+    width: 22px;
+}
+.social-links a:hover img{
+    filter: invert(1);
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    color: #7B3FBE;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.social-links a:hover {
+    background: #591ba0;
+    border-color: #7B3FBE;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(123, 63, 190, 0.3);
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #7B3FBE;
+    text-transform: uppercase;
+    font-family: "Inter", sans-serif;
+}
+
+.footer-column ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-column ul li {
+    transition: 0.3s ease;
+}
+
+.footer-column ul li a {
+    text-decoration: none;
+    color: rgba(80, 60, 120, 0.8);
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer-column ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #7B3FBE, #9B59D4);
+    transition: width 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #7B3FBE;
+}
+
+.footer-column ul li a:hover::after {
+    width: 100%;
+}
+
+
+
+/* Divider */
+.footer-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(150, 50, 255, 0.15), transparent);
+    margin: 20px 0;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 20px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-bottom p {
+    font-size: 13px;
+    color: rgba(80, 60, 120, 0.8);
+    font-family: "Inter", sans-serif;
+    opacity: 0.85;
+    transition: 0.3s ease;
+}
+
+.footer-bottom p:hover {
+    opacity: 1;
+    color: #7B3FBE;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 0 20px;
+    }
+
+    .footer-section {
+        padding: 60px 30px 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-section {
+        padding: 50px 20px 25px;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .newsletter-section {
+        padding: 36px 24px;
+        margin-bottom: 30px;
+    }
+
+    .newsletter-form {
+        flex-direction: column;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-column h4 {
+        font-size: 13px;
+    }
+
+    .footer-column ul li a {
+        font-size: 13px;
+    }
+
+    .social-links {
+        gap: 12px;
+    }
+
+    .social-links a {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+}

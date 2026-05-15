@@ -1,0 +1,284 @@
+.login-page {
+    height: 100vh;
+    width: 100%;
+    background-color: #D9CEEE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    width: 1100px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.login-right {
+    height: 100%;
+    width: 50%;
+}
+
+.login-right {
+    position: relative;
+    right: 5;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 15px;
+
+}
+
+.login-right-head {
+    /* background-color: red; */
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-right-head h1 {
+    font-family: "Holtwood One SC", serif;
+    font-weight: 400;
+    font-size: 30px;
+}
+
+.login-right-head p,
+.login-right-head a {
+    font-family: "Glory", sans-serif;
+    font-optical-sizing: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 22px;
+    color: #1a0f3d;
+}
+
+.login-google {
+    width: 90%;
+    padding: 12px;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s ease;
+    font-family: "Goldman", sans-serif;
+    letter-spacing: 0.05rem;
+
+}
+.login-google:hover{
+    background-color: #e1e1e1;
+}
+
+.login-divider {
+    width: 100%;
+    height: 1.5px;
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.login-divider p {
+    font-family: "Glory", sans-serif;
+
+}
+
+.left-divider {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(123, 63, 190, 0.3));
+
+    /* background-color: blue; */
+}
+
+.right-divider {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, rgba(123, 63, 190, 0.3), transparent);
+
+    /* background-color: yellow; */
+}
+
+.login-form {
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 10px;
+    justify-content: center;
+    width: 70%;
+}
+
+.login-form label {
+    margin-top: 10px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 800;
+    text-align: left;
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.login-form input {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.login-form a {
+    font-family: "Glory", sans-serif;
+    font-optical-sizing: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: #7B3FBE;
+}
+
+.login-input {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    width: 100%;
+    height: 30px;
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    font-family: "Glory", sans-serif;
+    font-size: 16px;
+}
+
+.login-input:focus {
+    outline: none;
+    border: 1px solid #7B3FBE;
+    box-shadow: 0 0 5px rgba(123, 63, 190, 0.3);
+}
+
+
+.login-btn {
+    padding: 15px 20px;
+    font-family: "Orbitron", sans-serif;
+    font-optical-sizing: auto;
+    letter-spacing: 1;
+    border: 1px solid purple;
+    background-color: #3d0a77;
+    color: #ffff;
+    font-weight: bold;
+    box-shadow: inset 0 0 20px #a900a9;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.login-btn:hover {
+    box-shadow: 0 0 10px #a900a9;
+    transform: scale(1.01);
+}
+/* Override Clerk's default styles */
+.clerk-root {
+    width: 100% !important;
+    max-width: 420px !important;
+}
+
+.clerk-card {
+    background: #ffffff !important;
+    border-radius: 24px !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15) !important;
+    padding: 40px !important;
+    border: none !important;
+}
+
+.clerk-title {
+    font-family: 'Your Serif Font', serif !important;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    color: #1a0f3d !important;
+}
+
+.clerk-subtitle {
+    color: #6b7280 !important;
+    font-size: 14px !important;
+}
+
+.clerk-google-btn {
+    border: 1.5px solid #e0d5f5 !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: #374151 !important;
+    transition: all 0.2s ease !important;
+}
+
+.clerk-google-btn:hover {
+    background: #f5f0ff !important;
+    border-color: #7B3FBE !important;
+}
+
+.clerk-label {
+    color: #6b7280 !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.clerk-input {
+    border: 1.5px solid #e0d5f5 !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    color: #1a0f3d !important;
+    padding: 12px 16px !important;
+}
+
+.clerk-input:focus {
+    border-color: #7B3FBE !important;
+    box-shadow: 0 0 0 3px rgba(123, 63, 190, 0.1) !important;
+}
+
+.clerk-submit-btn {
+    background: linear-gradient(135deg, #7B3FBE, #9B59D4) !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    padding: 12px !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.clerk-submit-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(123, 63, 190, 0.4) !important;
+}
+
+.clerk-link {
+    color: #7B3FBE !important;
+    font-weight: 600 !important;
+}
+
+.clerk-footer {
+    background: transparent !important;
+}
+
+/* Hide Clerk branding */
+.cl-internal-b3fm6y {
+    display: none !important;
+}
