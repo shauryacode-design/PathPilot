@@ -1,47 +1,46 @@
-'use client'
-
-import { useState } from 'react';
-import Link from 'next/link';
-import '@/styles/mobile-nav.css';
+"use client"
+import { useState } from "react";
+import "../styles/mobile-nav.css";
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 
 export default function MobileNav() {
-  const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
 
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
+    const closeMenu = () => {
+        setIsOpen(false);
+    };
 
-  return (
-    <div className="mobile-nav">
-      <div className="mobile-nav-header">
-        <div className="mobile-nav-logo">
-          <h1>PATHPILOT</h1>
+    return (
+        <div className="mobile-nav-wrapper">
+            {/* Hamburger Button */}
+            <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">
+                <span className={isOpen ? "active" : ""}></span>
+                <span className={isOpen ? "active" : ""}></span>
+                <span className={isOpen ? "active" : ""}></span>
+            </button>
+
+            {/* Mobile Menu */}
+            <div className={`mobile-menu ${isOpen ? "open" : ""}`}>
+                <div className="mobile-menu-content">
+                    <a href="#home" onClick={closeMenu}>HOME</a>
+                    <a href="#how-works" onClick={closeMenu}>HOW IT WORKS</a>
+                    <a href="#rdmap-preview" onClick={closeMenu}>ROADMAP PREVIEW</a>
+                    <div className="mobile-nav-login">
+                        <Show when="signed-out">
+                            <SignInButton>
+                                <button>LOGIN</button>
+                            </SignInButton>
+                        </Show>
+                        <Show when="signed-in">
+                            <UserButton />
+                        </Show>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button 
-          className={`hamburger ${isOpen ? 'active' : ''}`}
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="mobile-nav-menu">
-          <ul>
-            <li><Link href="/" onClick={closeMenu}>FEATURES</Link></li>
-            <li><Link href="/" onClick={closeMenu}>HOW IT WORKS</Link></li>
-            <li><Link href="/" onClick={closeMenu}>ABOUT</Link></li>
-          </ul>
-          <button className="mobile-login-btn" onClick={closeMenu}>LOG IN</button>
-        </div>
-      )}
-    </div>
-  );
+    );
 }

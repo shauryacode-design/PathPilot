@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import "../styles/rdmap-preview.css";
-import MobileNav from "./mobile-nav";
 import { useRef } from 'react';
 
 
@@ -9,48 +8,47 @@ import { useRef } from 'react';
 
 export default function Home() {
     const flipCardRef = useRef<HTMLDivElement>(null);
-const isFlipped = useRef(false);
-const isAnimating = useRef(false);
+    const isFlipped = useRef(false);
+    const isAnimating = useRef(false);
 
-const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = flipCardRef.current;
-    if (!card || isAnimating.current) return;  // ✅ stop tilt during flip
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const card = flipCardRef.current;
+        if (!card || isAnimating.current) return;  // ✅ stop tilt during flip
 
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -10;
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * -10;
 
-    if (isFlipped.current) {
-        card.style.transform = `rotateY(180deg) rotateX(${y}deg) rotateY(${x}deg)`;
-    } else {
-        card.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
-    }
-};
+        if (isFlipped.current) {
+            card.style.transform = `rotateY(180deg) rotateX(${y}deg) rotateY(${x}deg)`;
+        } else {
+            card.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+        }
+    };
 
-const handleMouseLeave = () => {
-    const card = flipCardRef.current;
-    if (!card) return;
-    card.style.transform = '';
-};
+    const handleMouseLeave = () => {
+        const card = flipCardRef.current;
+        if (!card) return;
+        card.style.transform = '';
+    };
 
-const handleFlip = () => {
-    const card = flipCardRef.current;
-    if (!card || isAnimating.current) return;
+    const handleFlip = () => {
+        const card = flipCardRef.current;
+        if (!card || isAnimating.current) return;
 
-    isAnimating.current = true;      // ✅ lock during animation
-    card.style.transform = '';       // ✅ clear tilt before flip
-    isFlipped.current = !isFlipped.current;
-    card.classList.toggle('flipped');
+        isAnimating.current = true;      // ✅ lock during animation
+        card.style.transform = '';       // ✅ clear tilt before flip
+        isFlipped.current = !isFlipped.current;
+        card.classList.toggle('flipped');
 
-    // ✅ unlock after animation completes
-    setTimeout(() => {
-        isAnimating.current = false;
-    }, 800);
-};
+        // ✅ unlock after animation completes
+        setTimeout(() => {
+            isAnimating.current = false;
+        }, 800);
+    };
     return (
         <div className="preview-section" id="rdmap-preview">
             <div className="section-heading">
-                {/* <h3>✦ Live Preview</h3> */}
                 <h1>See What Your Roadmap Looks Like</h1>
             </div>
             <div className="section-container preview-container">

@@ -10,8 +10,8 @@ export default clerkMiddleware(async (auth, req) => {
   // 2. If the user is logged in and trying to visit the landing page
   if (userId && isLandingPage(req)) {
     // Redirect them directly to the dashboard
-    const dashboardUrl = new URL('/dashboard', req.url);
-    return NextResponse.redirect(dashboardUrl);
+    const onboardingUrl = new URL('/onboarding', req.url);
+    return NextResponse.redirect(onboardingUrl);
   }
 });
 export const config = {

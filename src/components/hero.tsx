@@ -2,6 +2,7 @@
 import Image from "next/image";
 import "../styles/hero.css";
 import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import MobileNav from "./mobile-nav";
 
 
 
@@ -19,16 +20,17 @@ export default function Home() {
         </div>
         <div className="nav-login">
           <Show when="signed-out">
-              <SignInButton>
-                <button>LOGIN</button>
-              </SignInButton>
-              
-            </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
-          
+            <SignInButton>
+              <button>LOGIN</button>
+            </SignInButton>
+
+          </Show>
+          <Show when="signed-in">
+            <UserButton />
+          </Show>
+
         </div>
+        <MobileNav />
       </nav>
       <div className="hero-main">
         <div className="main-text">

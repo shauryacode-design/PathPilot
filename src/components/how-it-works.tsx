@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import "../styles/how-it-works.css";
-import MobileNav from "./mobile-nav";
 
 
 export default function Home() {
