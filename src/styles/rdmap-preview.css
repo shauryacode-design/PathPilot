@@ -803,6 +803,7 @@
 @media (max-width: 480px) {
     .preview-section{
         padding-top: 40px;
+        overflow-x: hidden;
     }
     .preview-left{
         width: 100%;
@@ -811,6 +812,7 @@
     }
     .preview-right{
         padding:5px 10px;
+        /* overflow-x: hidden; */
     }
     .section-heading h1 {
         font-size: 20px;
@@ -820,6 +822,7 @@
         gap: 20px;
         /* padding: 16px; */
         padding: 0;
+        overflow-x: hidden;
     }
 
     .card-flip-wrapper {

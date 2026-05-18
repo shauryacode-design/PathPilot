@@ -238,10 +238,12 @@
 @media (max-width: 480px) {
     .footer-section {
         padding: 40px 16px 20px;
+        overflow-x: hidden;
     }
 
     .footer-content {
         gap: 24px;
+        overflow-x: hidden;
     }
 
     .footer-brand {

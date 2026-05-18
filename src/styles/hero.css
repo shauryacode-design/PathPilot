@@ -238,6 +238,7 @@ nav {
         height: auto;
         min-height: 100vh;
         padding-bottom: 40px;
+        overflow-x: hidden;
     }
 
     nav {
@@ -315,10 +316,12 @@ nav {
         margin-bottom: 0;
         padding-bottom: 40px;
         min-height: auto;
+        overflow-x: hidden;
     }
     .hero-main{
         margin-bottom: 0;
         height: auto;
+        overflow: hidden;
     }
     .brand h1 {
         font-size: 18px;
@@ -334,9 +337,11 @@ nav {
     }
 
     .hero-main img {
-        min-width: 380px;
-        right: 2vw;
+        width: 100%;
+        max-width: 100vw;
+        right: 32;
         margin-bottom: 0;
+        object-fit: contain;
     }
 
     .subtext-CTA p {

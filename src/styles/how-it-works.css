@@ -227,12 +227,17 @@
 }
 
 @media (max-width: 480px) {
+    .how-works-section {
+        overflow-x: hidden;
+    }
+
     .section-heading h1 {
         font-size: 20px;
     }
 
     .steps-container {
         padding: 20px 16px;
+        overflow-x: hidden;
     }
 
     .step-card {
