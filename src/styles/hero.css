@@ -102,42 +102,58 @@ nav {
 
 .main-text {
     width: 100%;
-    /* background-color: red; */
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     /* padding: 20px; */
-
+    margin-bottom: 200px;
 }
 
-.main-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 260px;
-}
-
-.main-title h1:first-child {
-    color: purple;
-    opacity: 1;
-}
 
 .main-text h1 {
-    font-size: 128px;
+    font-size: 108px;
     font-family: "Holtwood One SC", serif;
     font-weight: 400;
     color: rgb(255, 255, 255);
     margin-bottom: -30px;
-    opacity: 0.35
+    opacity: 0.35;
+}
+
+
+/* .main-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    width: 100%;
+
+    background-color: red;
+} */
+.main-title h1:first-child{
+    margin-right: 50px;
+    margin-left: 80px;
+    position: absolute;
+    left: 0;
+}
+.main-title h1:nth-child(2){
+    margin-left: 100px;
+    position: absolute;
+    right: 0;
+}
+
+.main-title h1 {
+    color: purple;
+    opacity: 1;
+    font-size: 95px;
 }
 
 .hero-main img {
     position: absolute;
     align-self: center;
     bottom: 0;
-    right: 25vw;
+    right: 26vw;
     width: 850px;
     mask-image: linear-gradient(to right, transparent 0%, black 40%);
 
@@ -318,18 +334,22 @@ nav {
         min-height: auto;
         overflow-x: hidden;
     }
-    .hero-main{
+
+    .hero-main {
         margin-bottom: 0;
         height: auto;
         overflow: hidden;
     }
+
     .brand h1 {
         font-size: 18px;
         letter-spacing: 0.05rem;
     }
-    .main-title{
+
+    .main-title {
         width: 100%;
     }
+
     .main-text h1 {
         font-size: 45px;
         margin-bottom: -10px;
@@ -347,9 +367,10 @@ nav {
     .subtext-CTA p {
         font-size: 18px;
         padding: 8px;
-        
+
     }
-    .subtext-CTA{
+
+    .subtext-CTA {
         margin-bottom: 0;
     }
 

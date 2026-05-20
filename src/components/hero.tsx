@@ -34,10 +34,10 @@ export default function Home() {
       </nav>
       <div className="hero-main">
         <div className="main-text">
-          <h1>CONFUSED ABOUT</h1>
+          <h1>Know Your Goal.</h1>
           <div className="main-title">
-            <h1>CAREER</h1>
-            <h1>PATH ?</h1>
+            <h1>Now Find</h1>
+            <h1>The Path.</h1>
           </div>
         </div>
         <img src="/images/main-img-2.png" alt="" />

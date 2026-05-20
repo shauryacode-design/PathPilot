@@ -9,9 +9,9 @@ export default clerkMiddleware(async (auth, req) => {
 
   // 2. If the user is logged in and trying to visit the landing page
   if (userId && isLandingPage(req)) {
-    // Redirect them directly to the dashboard
-    const onboardingUrl = new URL('/onboarding', req.url);
-    return NextResponse.redirect(onboardingUrl);
+    const hasRoadmap = req.cookies.get('has_roadmap')?.value === 'true';
+    const targetUrl = new URL(hasRoadmap ? '/dashboard' : '/onboarding', req.url);
+    return NextResponse.redirect(targetUrl);
   }
 });
 export const config = {

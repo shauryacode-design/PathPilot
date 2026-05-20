@@ -1,14 +1,25 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/onboarding.css";
 import { useRouter } from "next/navigation";
 import { UserButton } from '@clerk/nextjs'
 
-
 export default function Onboarding() {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [apiError, setApiError] = useState<string>("");
+
+    useEffect(() => {
+        const hasRoadmap = localStorage.getItem('roadmap');
+        const urlParams = new URLSearchParams(window.location.search);
+        const isNew = urlParams.get('new') === 'true';
+
+        if (hasRoadmap && !isNew) {
+            router.push('/dashboard');
+        }
+    }, [router]);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -18,7 +29,7 @@ export default function Onboarding() {
         stream: "",
         interest: "",
         goal: "",
-        timePerDay: "",
+        timeforgoal: "",
         skillLevel: "",
     });
 
@@ -45,7 +56,7 @@ export default function Onboarding() {
         if (currentStep === 3) {
             if (!formData.interest) newErrors.interest = "Please select your interest";
             if (!formData.goal.trim()) newErrors.goal = "Please enter your career goal";
-            if (!formData.timePerDay) newErrors.timePerDay = "Please select time available";
+            if (!formData.timeforgoal) newErrors.timeforgoal = "Please select time available";
             if (!formData.skillLevel) newErrors.skillLevel = "Please select skill level";
         }
 
@@ -63,10 +74,38 @@ export default function Onboarding() {
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
-    const handleGenerate = () => {
-        if (validateStep()) {
-            console.log("Generating roadmap with:", formData);
-            router.push('/dashboard');
+    const handleGenerate = async () => {
+        if (!validateStep()) return;
+
+        setIsLoading(true);
+        setApiError(""); // Clear any previous errors
+
+        try {
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Save roadmap to localStorage temporarily
+                localStorage.setItem('roadmap', JSON.stringify(data.roadmap));
+                // Set cookie for middleware
+                document.cookie = "has_roadmap=true; path=/; max-age=31536000";
+                // Redirect to dashboard
+                router.push('/dashboard');
+            } else {
+                setApiError(data.error || 'Failed to generate roadmap. Please try again.');
+                console.error('API Error:', data.error);
+            }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+            setApiError('Failed to generate roadmap. ' + errorMessage);
+            console.error('Error:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -87,14 +126,21 @@ export default function Onboarding() {
 
     return (
         <div className="onboarding-section">
-            
+
             {/* Logo */}
             <div className="onboarding-nav" onClick={() => router.push('/#home')}>
                 <h1>PATHPILOT</h1>
-                <UserButton />  
+                <UserButton />
             </div>
 
             <div className="onboarding-container">
+
+                {/* Error Message */}
+                {apiError && (
+                    <div className="error-banner">
+                        <span>❌ {apiError}</span>
+                    </div>
+                )}
 
                 {/* Step Progress */}
                 <div className="steps-timeline">
@@ -183,7 +229,8 @@ export default function Onboarding() {
 
                             <div className="form-group">
                                 <label>Course <span className="required">*</span></label>
-                                <ChipGroup field="course" options={['B.Tech / B.E', 'BCA / MCA', 'B.Sc', 'Diploma', 'Other']} />
+                                <ChipGroup field="course" options={['B.Tech / B.E', 'BCA / MCA', 'B.Sc', 'BA', 'B.Com',
+                                    'BBA', 'BJMC', 'Diploma', 'MBA', 'Other']} />
                                 {errors.course && <span className="error-msg">{errors.course}</span>}
                             </div>
 
@@ -197,7 +244,7 @@ export default function Onboarding() {
                                 <label>Stream / Subject <span className="required">*</span></label>
                                 <input
                                     type="text"
-                                    placeholder="e.g. Computer Science, AI & Data Science"
+                                    placeholder="e.g. Journalism, AI & Data Science"
                                     value={formData.stream}
                                     onChange={(e) => handleChange('stream', e.target.value)}
                                     className={`form-input ${errors.stream ? 'input-error' : ''}`}
@@ -220,7 +267,18 @@ export default function Onboarding() {
 
                             <div className="form-group">
                                 <label>Field of Interest <span className="required">*</span></label>
-                                <ChipGroup field="interest" options={['Web Development', 'AI / ML', 'UI/UX Design', 'Data Science', 'Cybersecurity', 'App Development']} />
+                                <ChipGroup field="interest" options={['Software Development', 'AI / ML', 'UI/UX Design',
+                                    'Data Science', 'Cybersecurity', 'Digital Marketing',
+                                    'Journalism & Media', 'Business & Finance',
+                                    'Content Creation', 'Graphic Design',
+                                    'Product Management', 'Other']} />
+                                {formData.interest === 'Other' && (
+                                    <input
+                                        placeholder="Type your field of interest"
+                                        className="form-input other-input"
+                                        onChange={(e) => handleChange('interestOther', e.target.value)}
+                                    />
+                                )}
                                 {errors.interest && <span className="error-msg">{errors.interest}</span>}
                             </div>
 
@@ -236,9 +294,9 @@ export default function Onboarding() {
                             </div>
 
                             <div className="form-group">
-                                <label>Daily Time Available <span className="required">*</span></label>
-                                <ChipGroup field="timePerDay" options={['30 mins', '1 hour', '2 hours', '3+ hours']} />
-                                {errors.timePerDay && <span className="error-msg">{errors.timePerDay}</span>}
+                                <label>When do you want to achieve this goal? <span className="required">*</span></label>
+                                <ChipGroup field="timeforgoal" options={['3 months', '6 months', '1 year', '2+ years']} />
+                                {errors.timeforgoal && <span className="error-msg">{errors.timeforgoal}</span>}
                             </div>
 
                             <div className="form-group">
@@ -267,8 +325,12 @@ export default function Onboarding() {
                             </button>
                         )}
                         {currentStep === 3 && (
-                            <button className="btn-generate" onClick={handleGenerate}>
-                                🚀 Generate My Roadmap
+                            <button
+                                className="btn-generate"
+                                onClick={handleGenerate}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? '⏳ Generating...' : '🚀 Generate My Roadmap'}
                             </button>
                         )}
                     </div>
