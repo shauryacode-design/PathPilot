@@ -90,8 +90,31 @@ export default function Onboarding() {
             const data = await response.json();
 
             if (data.success) {
-                // Save roadmap to localStorage temporarily
-                localStorage.setItem('roadmap', JSON.stringify(data.roadmap));
+                const newRoadmap = data.roadmap;
+                newRoadmap.id = Date.now().toString();
+                newRoadmap.createdAt = new Date().toISOString();
+
+                // Retrieve existing list
+                const existingRoadmaps = localStorage.getItem('roadmaps');
+                let roadmapsList = [];
+                if (existingRoadmaps) {
+                    try {
+                        roadmapsList = JSON.parse(existingRoadmaps);
+                    } catch (e) {
+                        roadmapsList = [];
+                    }
+                }
+                
+                // Add the new roadmap
+                roadmapsList.push(newRoadmap);
+
+                // Save back to localStorage
+                localStorage.setItem('roadmaps', JSON.stringify(roadmapsList));
+                localStorage.setItem('activeRoadmapId', newRoadmap.id);
+                
+                // Keep the single 'roadmap' key for backward compatibility
+                localStorage.setItem('roadmap', JSON.stringify(newRoadmap));
+
                 // Set cookie for middleware
                 document.cookie = "has_roadmap=true; path=/; max-age=31536000";
                 // Redirect to dashboard

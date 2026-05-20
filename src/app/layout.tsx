@@ -44,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${geistSans.variable} ${geistMono.variable} {montserrat.className} {orbitron.className} {glory.className}`} >
+      <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${montserrat.className} ${orbitron.className} ${glory.className}`} >
         <body>
           {children}
         </body>
