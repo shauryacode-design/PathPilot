@@ -13,7 +13,7 @@ nav {
     /* background-color: red; */
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .brand {
@@ -22,25 +22,35 @@ nav {
 }
 
 .brand h1 {
-    font-size: 18px;
+    font-size: 19px;
     color: #401472;
     font-weight: 800;
     letter-spacing: 0.1rem;
     font-family: "Orbitron", sans-serif;
 }
 
+.brand-links {
+    display: flex;
+    /* background-color: red; */
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    margin-left: 80px;
+}
+
 .nav-links {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 36px;
+    gap: 30px;
 }
 
 .nav-links a {
     text-decoration: none;
     color: black;
-    font-size: 16px;
-    font-family: "Glory", sans-serif;
+    font-size: 15px;
+    /* font-family: "Inter", sans-serif; */
+    font-family: "Poppins", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
     position: relative;
@@ -67,11 +77,15 @@ nav {
     width: 100%;
 }
 
-.nav-login button {
-    padding: 10px 25px;
-    border-radius: 999px;
-    background: transparent;
+.nav-login {
+    margin-right: 90px;
+}
 
+.nav-login button {
+    padding: 5px 25px;
+    border-radius: 999px;
+    /* background: linear-gradient(135deg, #8a2be2, #c026d3); */
+    background: transparent;
     border: 2px solid #7B3FBE;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
@@ -80,16 +94,17 @@ nav {
     font-size: 15px;
     transition: all 0.2s ease;
     cursor: pointer;
-    color: #591ba0;
+    color: #7B3FBE;
     letter-spacing: 0.5px;
     box-shadow: none;
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .nav-login button:hover {
-    background-color: #7B3FBE;
+    background: linear-gradient(135deg, #9333ea, #d946ef);
     color: white;
     box-shadow: 0 4px 15px rgba(123, 63, 190, 0.4);
     transform: translateY(-2px);
@@ -131,13 +146,14 @@ nav {
 
     background-color: red;
 } */
-.main-title h1:first-child{
+.main-title h1:first-child {
     margin-right: 50px;
     margin-left: 80px;
     position: absolute;
     left: 0;
 }
-.main-title h1:nth-child(2){
+
+.main-title h1:nth-child(2) {
     margin-left: 100px;
     position: absolute;
     right: 0;
@@ -216,6 +232,14 @@ nav {
         font-size: 16px;
     }
 
+    .brand-links {
+        margin-left: 0;
+    }
+
+    .nav-login {
+        margin-right: 0;
+    }
+
     .nav-links {
         gap: 24px;
     }
@@ -225,9 +249,18 @@ nav {
     }
 
     .main-title {
-        gap: 180px;
+        gap: 0px;
+        /* background-color: red; */
     }
 
+    .main-title h1:first-child,
+    .main-title h1:nth-child(2) {
+        position: static;
+        margin: 0;
+    }
+    .main-text{
+        margin-bottom: 0;
+    }
     .main-text h1 {
         font-size: 100px;
     }

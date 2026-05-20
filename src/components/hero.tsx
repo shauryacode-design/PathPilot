@@ -10,13 +10,15 @@ export default function Home() {
   return (
     <div className="hero-section" id="home">
       <nav>
-        <div className="brand">
-          <h1>PATHPILOT</h1>
-        </div>
-        <div className="nav-links">
-          <a href="#home">HOME</a>
-          <a href="#how-works">HOW IT WORKS</a>
-          <a href="#rdmap-preview">ROADMAP PREVIEW</a>
+        <div className="brand-links">
+          <div className="brand">
+            <h1>PathPilot</h1>
+          </div>
+          <div className="nav-links">
+            <a href="#home">Home</a>
+            <a href="#how-works">How It Works</a>
+            <a href="#rdmap-preview">Roadmap Preview</a>
+          </div>
         </div>
         <div className="nav-login">
           <Show when="signed-out">
