@@ -63,7 +63,7 @@ export default function Dashboard() {
         }
         roadmapsList = [parsedLegacy];
         localStorage.setItem('roadmaps', JSON.stringify(roadmapsList));
-      } catch (e) {}
+      } catch (e) { }
     }
 
     setRoadmaps(roadmapsList);
@@ -71,7 +71,7 @@ export default function Dashboard() {
     if (roadmapsList.length > 0) {
       let activeId = localStorage.getItem('activeRoadmapId');
       let currentActive = roadmapsList.find(r => r.id === activeId);
-      
+
       if (!currentActive) {
         currentActive = roadmapsList[0];
         activeId = currentActive.id || 'legacy';
@@ -131,7 +131,7 @@ export default function Dashboard() {
   const handleSignOut = async () => {
     await signOut();
     document.cookie = "has_roadmap=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-    
+
     if (typeof window !== 'undefined') {
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
@@ -170,7 +170,7 @@ export default function Dashboard() {
   const getRoadmapProgress = (r: Roadmap) => {
     const rId = r.id || 'legacy';
     let rCompletedTasks: string[] = [];
-    
+
     if (rId === activeRoadmapId) {
       rCompletedTasks = completedTasks;
     } else {
@@ -182,7 +182,7 @@ export default function Dashboard() {
     }
 
     const rTotalTasks = r.steps.reduce((acc, step) => acc + step.tasks.length, 0) || 0;
-    const completedCount = rCompletedTasks.filter(t => 
+    const completedCount = rCompletedTasks.filter(t =>
       r.steps.some(step => step.tasks.includes(t))
     ).length;
 
@@ -197,7 +197,7 @@ export default function Dashboard() {
       : completedTasks.filter(t => t !== task);
 
     setCompletedTasks(newTasks);
-    
+
     const rId = activeRoadmapId || 'legacy';
     localStorage.setItem(`completedTasks_${rId}`, JSON.stringify(newTasks));
     localStorage.setItem('completedTasks', JSON.stringify(newTasks));
@@ -253,19 +253,20 @@ export default function Dashboard() {
       {/* Navbar */}
       <nav className="dashboard-nav">
         <div className="dashboard-logo">
-          PATHPILOT
+          <img src="/images/PathPilot-logos.png" alt="" />
         </div>
         <div className="dashboard-nav-right">
+          <span className="welcome-text">Hi, {user?.firstName}</span>
+
           <div className="streak-badge" title={`${streak} day streak`}>
-            🔥 {streak} <span className="badge-text">day streak</span>
+            <img src="/images/streak.svg" alt="" /> {streak} <span className="badge-text">day streak</span>
           </div>
           <div className="xp-badge" title={`${xp} XP`}>
-            ⭐ {xp} <span className="badge-text">XP</span>
+            <img src="/images/level.svg" alt="" /> {xp} <span className="badge-text">XP</span>
           </div>
           <div className="level-badge" title={`Level ${level}`}>
             Lv.{level}
           </div>
-          <span className="welcome-text">Hi, {user?.firstName} 👋</span>
           <button className="new-roadmap-btn" onClick={() => router.push('/onboarding?new=true')} title="Create New Roadmap">
             <span className="btn-icon">+</span> <span className="btn-text">New Roadmap</span>
           </button>
@@ -290,7 +291,7 @@ export default function Dashboard() {
       {/* Dashboard Layout with Sidebar */}
       {roadmaps.length > 0 && (
         <div className="dashboard-layout-container">
-          
+
           {/* Sidebar */}
           <aside className="dashboard-sidebar">
             <div className="sidebar-header-row">
@@ -308,13 +309,13 @@ export default function Dashboard() {
                     className={`roadmap-menu-item ${isActive ? 'roadmap-menu-item-active' : ''}`}
                     onClick={() => switchRoadmap(rId)}
                   >
-                    <span className="roadmap-item-icon">🎯</span>
+                    <span className="roadmap-item-icon"><img src="/images/goal.svg" alt="" /></span>
                     <div className="roadmap-item-info">
                       <span className="roadmap-item-title">{r.title || extractGoal(r.goal)}</span>
                       <span className="roadmap-item-progress-text">{progressVal}% done</span>
                       <div className="roadmap-item-progress-bar-container">
-                        <div 
-                          className="roadmap-item-progress-bar-fill" 
+                        <div
+                          className="roadmap-item-progress-bar-fill"
                           style={{ width: `${progressVal}%` }}
                         ></div>
                       </div>
@@ -323,9 +324,9 @@ export default function Dashboard() {
                 );
               })}
             </div>
-            
-            <button 
-              className="sidebar-add-btn" 
+
+            <button
+              className="sidebar-add-btn"
               onClick={() => router.push('/onboarding?new=true')}
             >
               ➕ Create New Path
@@ -341,8 +342,7 @@ export default function Dashboard() {
                 <div className="hero-strip">
                   <div className="hero-strip-left">
                     <div className="hero-strip-badges">
-                      <div className="goal-badge">🎯 {extractGoal(roadmap.goal)}</div>
-                      <div className="ai-badge">✨ AI Co-Pilot</div>
+                      <div className="goal-badge"><img src="/images/goal.svg" alt="" /> {extractGoal(roadmap.goal)}</div>
                     </div>
                     <h2>{roadmap.title || `Keep going, ${user?.firstName}!`}</h2>
                     <p>Welcome back! You have completed {completedTasks.length} of {totalTasks} tasks on this path · {roadmap.duration}</p>
@@ -372,7 +372,7 @@ export default function Dashboard() {
                 {/* XP Level bar */}
                 <div className="xp-section">
                   <div className="xp-info">
-                    <span>⭐ Level {level}</span>
+                    <span><img src="/images/level.svg" alt="" /> Level {level}</span>
                     <span>{currentLevelXp}/{xpForNextLevel} XP to next level</span>
                   </div>
                   <div className="xp-track">
@@ -420,7 +420,7 @@ export default function Dashboard() {
                   {/* Today's tasks */}
                   <div className="tasks-card">
                     <div className="card-header-row">
-                      <h3>📋 Today&apos;s Tasks</h3>
+                      <h3><img src="/images/tasks-list.svg" alt="" /> Today&apos;s Tasks</h3>
                       <span className="tasks-count">{completedTasks.filter(t =>
                         roadmap.steps[activeStep]?.tasks.includes(t)
                       ).length}/{roadmap.steps[activeStep]?.tasks.length || 0}</span>
@@ -448,7 +448,7 @@ export default function Dashboard() {
                           <div className={`task-checkbox ${completedTasks.includes(task) ? 'checked' : ''}`}>
                             {completedTasks.includes(task) ? '✓' : ''}
                           </div>
-                          <span>{task}</span>
+                          <span className="tasks-text">{task}</span>
                           {!completedTasks.includes(task) && (
                             <span className="task-xp">+10 XP</span>
                           )}
@@ -462,7 +462,7 @@ export default function Dashboard() {
                     <div className="step-card-header">
                       <div className="step-num-big">{activeStep + 1}</div>
                       <div>
-                        <h2>{roadmap.steps[activeStep]?.title}</h2>
+                        <h3>{roadmap.steps[activeStep]?.title}</h3>
                         <span className="duration-pill">⏱ {roadmap.steps[activeStep]?.duration}</span>
                       </div>
                     </div>
@@ -470,7 +470,7 @@ export default function Dashboard() {
                     <p className="step-desc">{roadmap.steps[activeStep]?.description}</p>
 
                     <div className="resources-section">
-                      <h4>📚 Resources</h4>
+                      <h4><img src="/images/resources.svg" alt="" /> Resources</h4>
                       {roadmap.steps[activeStep]?.resources.map((resource, i) => (
                         <a
                           key={i}
@@ -496,8 +496,8 @@ export default function Dashboard() {
 
       {/* Floating Action Button for Mobile View */}
       {roadmaps.length > 0 && (
-        <button 
-          className="mobile-fab-add" 
+        <button
+          className="mobile-fab-add"
           onClick={() => router.push('/onboarding?new=true')}
           title="Create New Career Goal"
         >
