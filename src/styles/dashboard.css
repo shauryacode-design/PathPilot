@@ -196,7 +196,7 @@ body {
 
 .welcome-text {
   color: var(--text-primary);
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 600;
   margin-right: 8px;
   font-family: "Poppins", sans-serif;

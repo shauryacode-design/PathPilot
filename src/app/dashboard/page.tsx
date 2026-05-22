@@ -256,8 +256,6 @@ export default function Dashboard() {
           <img src="/images/PathPilot-logos.png" alt="" />
         </div>
         <div className="dashboard-nav-right">
-          <span className="welcome-text">Hi, {user?.firstName}</span>
-
           <div className="streak-badge" title={`${streak} day streak`}>
             <img src="/images/streak.svg" alt="" /> {streak} <span className="badge-text">day streak</span>
           </div>
@@ -311,7 +309,7 @@ export default function Dashboard() {
                   >
                     <span className="roadmap-item-icon"><img src="/images/goal.svg" alt="" /></span>
                     <div className="roadmap-item-info">
-                      <span className="roadmap-item-title">{r.title || extractGoal(r.goal)}</span>
+                      <span className="roadmap-item-title">Roadmap to become {extractGoal(r.goal)}</span>
                       <span className="roadmap-item-progress-text">{progressVal}% done</span>
                       <div className="roadmap-item-progress-bar-container">
                         <div
@@ -344,7 +342,7 @@ export default function Dashboard() {
                     <div className="hero-strip-badges">
                       <div className="goal-badge"><img src="/images/goal.svg" alt="" /> {extractGoal(roadmap.goal)}</div>
                     </div>
-                    <h2>{roadmap.title || `Keep going, ${user?.firstName}!`}</h2>
+                    <span className="welcome-text">Hi, {user?.firstName}</span>
                     <p>Welcome back! You have completed {completedTasks.length} of {totalTasks} tasks on this path · {roadmap.duration}</p>
                   </div>
                   <div className="hero-strip-right">
