@@ -105,6 +105,271 @@ body {
   }
 }
 
+/* ===== ROADMAP COMPLETION MODAL ===== */
+.roadmap-complete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  background: rgba(6, 4, 10, 0.75);
+  backdrop-filter: blur(8px);
+  animation: overlayFadeIn 0.3s ease forwards;
+}
+
+.roadmap-complete-modal {
+  width: 100%;
+  max-width: 520px;
+  max-height: min(90vh, 720px);
+  overflow-y: auto;
+  padding: 32px 28px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgba(30, 15, 45, 0.98) 0%, rgba(12, 6, 20, 0.99) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.2);
+  animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.roadmap-complete-badge {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 12px rgba(236, 72, 153, 0.4));
+}
+
+.roadmap-complete-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #f3e8ff;
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.roadmap-complete-message {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.roadmap-complete-message strong {
+  color: #d8b4fe;
+  font-weight: 700;
+}
+
+.roadmap-complete-next {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 16px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.roadmap-complete-next h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #c4b5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  font-family: "Glory", sans-serif;
+}
+
+.roadmap-complete-next p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(243, 240, 247, 0.75);
+}
+
+.roadmap-complete-next strong {
+  color: #e9d5ff;
+}
+
+.roadmap-complete-platforms h4 {
+  font-size: 12px;
+  font-weight: 800;
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.roadmap-complete-platforms ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.roadmap-complete-platforms li a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.roadmap-complete-platforms li a:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.35);
+  transform: translateX(3px);
+}
+
+.roadmap-complete-platforms .platform-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  width: 100%;
+}
+
+.roadmap-complete-platforms .platform-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  flex: 1;
+  line-height: 1.4;
+}
+
+.roadmap-complete-platforms .platform-arrow {
+  color: #a78bfa;
+  font-weight: 800;
+  font-size: 16px;
+  margin-left: auto;
+}
+
+.roadmap-complete-dismiss {
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 14px;
+  background: var(--gradient-primary);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+  font-family: "Glory", sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.roadmap-complete-dismiss:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(124, 58, 237, 0.55);
+}
+
+@media (max-width: 480px) {
+  .roadmap-complete-modal {
+    padding: 24px 18px;
+  }
+
+  .roadmap-complete-title {
+    font-size: 18px;
+  }
+}
+
+/* ===== PERSISTENT CAREER RESOURCES (completed roadmaps) ===== */
+.career-resources-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(139, 92, 246, 0.15) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  box-shadow: var(--shadow-premium), 0 0 24px rgba(16, 185, 129, 0.08);
+}
+
+.career-resources-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.career-resources-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.career-resources-text h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #a7f3d0;
+  margin-bottom: 6px;
+  font-family: "Glory", sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.career-resources-text p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(243, 240, 247, 0.8);
+}
+
+.career-resources-text strong {
+  color: #d8b4fe;
+}
+
+.career-resources-btn {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: var(--gradient-primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+  font-family: "Glory", sans-serif;
+}
+
+.career-resources-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(124, 58, 237, 0.5);
+}
+
+@media (max-width: 600px) {
+  .career-resources-card {
+    padding: 18px 16px;
+  }
+
+  .career-resources-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .career-resources-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* ===== HIGH-FIDELITY NAVBAR ===== */
 
 .dashboard-nav {
@@ -134,8 +399,9 @@ body {
   width: 40px;
   height: 40px;
   padding: 8px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(168, 85, 247, 0.25);
+  background: transparent;
+  /* border: 1px solid rgba(168, 85, 247, 0.25); */
+  border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -154,6 +420,15 @@ body {
   background: #d8b4fe;
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dashboard-hamburger span:first-child{
+  width: 25px;
+}
+.dashboard-hamburger span:nth-child(2){
+  width: 20px;
+}
+.dashboard-hamburger span:nth-child(3){
+  width: 15px;
 }
 
 .dashboard-hamburger span.active:nth-child(1) {
@@ -1409,12 +1684,45 @@ background-color: red;} */
     padding: 20px;
   }
 
+  /* Vertical timeline on mobile */
   .timeline-nodes {
-    gap: 4px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
   }
 
   .timeline-item {
-    min-width: 110px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: unset;
+    flex: unset;
+    width: 100%;
+    padding-bottom: 28px;
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-node {
+    flex-shrink: 0;
+  }
+
+  .timeline-connector {
+    top: 44px;
+    left: 21px;
+    width: 2px;
+    height: calc(100% - 44px);
+    min-height: 28px;
+  }
+
+  .timeline-label {
+    text-align: left;
+    margin-top: 0;
+    padding-top: 11px;
+    flex: 1;
+    max-width: none;
   }
 }
 

@@ -29,6 +29,62 @@ interface Roadmap {
   totalTasks: number;
 }
 
+const JOB_PLATFORMS = [
+  {
+    name: "LinkedIn Jobs",
+    description: "Internships, entry-level roles, and professional networking",
+    url: "https://www.linkedin.com/jobs/",
+  },
+  {
+    name: "Indeed",
+    description: "Large job board with internships and graduate roles worldwide",
+    url: "https://www.indeed.com/",
+  },
+  {
+    name: "Handshake",
+    description: "Student-focused platform used by universities for campus hiring",
+    url: "https://joinhandshake.com/",
+  },
+  {
+    name: "Glassdoor",
+    description: "Job listings with company reviews and salary insights",
+    url: "https://www.glassdoor.com/Job/index.htm",
+  },
+  {
+    name: "Wellfound",
+    description: "Startup and tech jobs, including junior and internship roles",
+    url: "https://wellfound.com/jobs",
+  },
+  {
+    name: "Internshala",
+    description: "Internships and entry-level opportunities for students",
+    url: "https://internshala.com/",
+  },
+  {
+    name: "Naukri Campus",
+    description: "Campus placements and fresher jobs (India)",
+    url: "https://www.naukri.com/campus",
+  },
+] as const;
+
+const getCelebratedRoadmapIds = (): string[] => {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem("celebratedRoadmaps") || "[]");
+  } catch {
+    return [];
+  }
+};
+
+const isRoadmapComplete = (r: Roadmap, tasks: string[]) => {
+  const allTasks = r.steps.flatMap((step) => step.tasks);
+  if (allTasks.length === 0) return false;
+  const completedCount = tasks.filter((t) =>
+    r.steps.some((step) => step.tasks.includes(t))
+  ).length;
+  return completedCount >= allTasks.length;
+};
+
 export default function Dashboard() {
   const { user, isLoaded } = useUser();
   const { signOut } = useClerk();
@@ -44,6 +100,7 @@ export default function Dashboard() {
   const [showCelebration, setShowCelebration] = useState(false);
   const [level, setLevel] = useState(1);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showRoadmapCompleteModal, setShowRoadmapCompleteModal] = useState(false);
   const isStepUnlocked = (stepIndex: number) => {
     if (stepIndex === 0) return true; // first step always unlocked
 
@@ -138,7 +195,7 @@ export default function Dashboard() {
   }, [xp]);
 
   useEffect(() => {
-    if (sidebarOpen) {
+    if (sidebarOpen || showRoadmapCompleteModal) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -146,7 +203,28 @@ export default function Dashboard() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [sidebarOpen]);
+  }, [sidebarOpen, showRoadmapCompleteModal]);
+
+  useEffect(() => {
+    if (!roadmap || !activeRoadmapId) return;
+    if (!isRoadmapComplete(roadmap, completedTasks)) return;
+    if (!getCelebratedRoadmapIds().includes(activeRoadmapId)) {
+      setShowRoadmapCompleteModal(true);
+    }
+  }, [roadmap, completedTasks, activeRoadmapId]);
+
+  const dismissRoadmapCompleteModal = () => {
+    if (activeRoadmapId) {
+      const ids = getCelebratedRoadmapIds();
+      if (!ids.includes(activeRoadmapId)) {
+        localStorage.setItem(
+          "celebratedRoadmaps",
+          JSON.stringify([...ids, activeRoadmapId])
+        );
+      }
+    }
+    setShowRoadmapCompleteModal(false);
+  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -156,7 +234,7 @@ export default function Dashboard() {
       const keysToRemove = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key && (key.startsWith('completedTasks_') || key === 'roadmap' || key === 'roadmaps' || key === 'activeRoadmapId' || key === 'completedTasks' || key === 'xp' || key === 'streak' || key === 'lastVisit')) {
+        if (key && (key.startsWith('completedTasks_') || key === 'roadmap' || key === 'roadmaps' || key === 'activeRoadmapId' || key === 'completedTasks' || key === 'celebratedRoadmaps' || key === 'xp' || key === 'streak' || key === 'lastVisit')) {
           keysToRemove.push(key);
         }
       }
@@ -285,6 +363,14 @@ export default function Dashboard() {
       localStorage.setItem('xp', newXp.toString());
       setShowCelebration(true);
       setTimeout(() => setShowCelebration(false), 1500);
+
+      const rId = activeRoadmapId || "legacy";
+      if (
+        isRoadmapComplete(roadmap, newTasks) &&
+        !getCelebratedRoadmapIds().includes(rId)
+      ) {
+        setShowRoadmapCompleteModal(true);
+      }
     } else {
       const newXp = Math.max(0, xp - 10);
       setXp(newXp);
@@ -309,6 +395,8 @@ export default function Dashboard() {
   const progress = totalTasks > 0 ? Math.round((completedTasks.length / totalTasks) * 100) : 0;
   const xpForNextLevel = level * 100;
   const currentLevelXp = xp % 100;
+  const isCurrentRoadmapComplete =
+    !!roadmap && isRoadmapComplete(roadmap, completedTasks);
 
   if (!isLoaded) return (
     <div className="loading-screen">
@@ -324,6 +412,68 @@ export default function Dashboard() {
       {showCelebration && (
         <div className="celebration">
           <span>⭐ +10 XP!</span>
+        </div>
+      )}
+
+      {/* Roadmap completion congratulations */}
+      {showRoadmapCompleteModal && roadmap && (
+        <div
+          className="roadmap-complete-overlay"
+          onClick={dismissRoadmapCompleteModal}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="roadmap-complete-title"
+        >
+          <div
+            className="roadmap-complete-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="roadmap-complete-badge">🎉</div>
+            <h2 id="roadmap-complete-title" className="roadmap-complete-title">
+              Congratulations, {user?.firstName || "there"}!
+            </h2>
+            <p className="roadmap-complete-message">
+              You&apos;ve completed your entire roadmap to become a{" "}
+              <strong>{extractGoal(roadmap.goal)}</strong>. Every step is done —
+              that&apos;s a huge achievement!
+            </p>
+            <div className="roadmap-complete-next">
+              <h3>What&apos;s next?</h3>
+              <p>
+                Put your skills into practice — start applying for internships
+                and entry-level roles in your field. Also check{" "}
+                <strong>official company career pages</strong> for brands you
+                want to work with; many post openings there first.
+              </p>
+            </div>
+            <div className="roadmap-complete-platforms">
+              <h4>Trusted places to find opportunities</h4>
+              <ul>
+                {JOB_PLATFORMS.map((platform) => (
+                  <li key={platform.name}>
+                    <a
+                      href={platform.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span className="platform-name">{platform.name}</span>
+                      <span className="platform-desc">{platform.description}</span>
+                      <span className="platform-arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <button
+              type="button"
+              className="roadmap-complete-dismiss"
+              onClick={dismissRoadmapCompleteModal}
+            >
+              Continue my journey
+            </button>
+          </div>
         </div>
       )}
 
@@ -363,9 +513,9 @@ export default function Dashboard() {
             <UserButton />
           </div>
         </div>
-          <div className="clerk-mobile-profileavatar">
-            <UserButton />
-          </div>
+        <div className="clerk-mobile-profileavatar">
+          <UserButton />
+        </div>
       </nav>
 
       {/* Empty state */}
@@ -515,6 +665,32 @@ export default function Dashboard() {
                     ></div>
                   </div>
                 </div>
+
+                {isCurrentRoadmapComplete && (
+                  <div className="career-resources-card">
+                    <div className="career-resources-content">
+                      <span className="career-resources-icon" aria-hidden="true">
+                        🎯
+                      </span>
+                      <div className="career-resources-text">
+                        <h3>Path complete — ready to apply!</h3>
+                        <p>
+                          You finished your roadmap to become a{" "}
+                          <strong>{extractGoal(roadmap.goal)}</strong>. Open your
+                          career resources anytime to find internships and jobs on
+                          trusted platforms.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="career-resources-btn"
+                      onClick={() => setShowRoadmapCompleteModal(true)}
+                    >
+                      View job &amp; internship platforms
+                    </button>
+                  </div>
+                )}
 
                 {/* Roadmap Timeline */}
                 <div className="timeline-section">
