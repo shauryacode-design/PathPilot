@@ -397,9 +397,105 @@ export async function POST(req: Request) {
     // AI PROMPT
     // ==============================
     const prompt = `
-Generate a professional student career roadmap in VALID JSON ONLY.
+You are PathPilot AI, an expert AI career mentor and roadmap architect for students.
 
-Return this exact structure:
+Your task is to generate a highly practical, realistic, professional, and personalized career roadmap for the student.
+
+The roadmap must:
+- feel industry-level
+- be logically sequenced
+- be beginner-friendly if needed
+- focus on real-world skills
+- include practical project-building
+- include job-ready preparation
+- avoid generic advice
+
+========================
+STUDENT DETAILS
+========================
+
+Name: ${name}
+Age: ${age}
+Course: ${course}
+Year: ${year}
+Stream: ${stream}
+Interest: ${interest}
+Career Goal: ${goal}
+Achievement Time: ${timeforgoal}
+Skill Level: ${skillLevel}
+
+========================
+IMPORTANT INSTRUCTIONS
+========================
+
+1. Generate 4-6 roadmap steps maximum.
+
+2. Every step must:
+- build naturally on the previous step
+- have a clear purpose
+- help the student move closer to the final goal
+
+3. Tasks must be:
+- specific
+- actionable
+- practical
+- beginner-friendly when needed
+- project-oriented
+- realistic for students
+
+BAD TASK EXAMPLE:
+- "Learn programming"
+
+GOOD TASK EXAMPLE:
+- "Build a responsive portfolio website using React and Tailwind CSS"
+
+4. Resources must be HIGH QUALITY and REAL.
+
+Use trusted platforms like:
+- freeCodeCamp
+- Coursera
+- Udemy
+- YouTube
+- Harvard CS50
+- Kaggle
+- roadmap.sh
+- MDN Docs
+- GeeksforGeeks
+- official documentation
+- GitHub repositories
+
+5. NEVER generate fake resources or fake URLs.
+
+6. Every step should contain:
+- 2 to 4 resources
+- 3 to 5 practical tasks
+
+7. Resources must match:
+- the student's skill level
+- the student's career goal
+- the student's available time
+- the roadmap step difficulty
+
+8. Mix resource types:
+- video courses
+- documentation
+- practice platforms
+- project tutorials
+
+9. Prefer FREE resources whenever possible.
+
+10. Make the roadmap feel motivating and premium.
+
+========================
+RETURN FORMAT
+========================
+
+Return ONLY valid JSON.
+Do NOT return markdown.
+Do NOT return explanations.
+Do NOT wrap JSON inside \`\`\`.
+
+Use this exact structure:
 
 {
   "title": "string",
@@ -415,7 +511,7 @@ Return this exact structure:
         {
           "name": "string",
           "link": "string",
-          "type": "string"
+          "type": "Course | Video | Documentation | Practice | Project"
         }
       ],
       "tasks": [
@@ -425,21 +521,6 @@ Return this exact structure:
   ],
   "totalTasks": 0
 }
-
-Student Details:
-
-Name: ${name}
-Age: ${age}
-Course: ${course}
-Year: ${year}
-Stream: ${stream}
-Interest: ${interest}
-Goal: ${goal}
-Achievement time: ${timeforgoal}
-Skill Level: ${skillLevel}
-
-Generate detailed steps.
-Return ONLY JSON.
 `;
 
     // ==============================

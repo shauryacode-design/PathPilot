@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { useUser, useClerk, UserButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import "../../styles/dashboard.css";
@@ -43,7 +43,16 @@ export default function Dashboard() {
   const [streak, setStreak] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [level, setLevel] = useState(1);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isStepUnlocked = (stepIndex: number) => {
+    if (stepIndex === 0) return true; // first step always unlocked
 
+    // Check if ALL tasks of previous step are completed
+    const previousStep = roadmap?.steps[stepIndex - 1];
+    if (!previousStep) return false;
+
+    return previousStep.tasks.every(task => completedTasks.includes(task));
+  };
   useEffect(() => {
     const savedSingle = localStorage.getItem('roadmap');
     const savedMultiple = localStorage.getItem('roadmaps');
@@ -128,6 +137,17 @@ export default function Dashboard() {
     setLevel(Math.floor(xp / 100) + 1);
   }, [xp]);
 
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
   const handleSignOut = async () => {
     await signOut();
     document.cookie = "has_roadmap=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
@@ -152,6 +172,7 @@ export default function Dashboard() {
     setRoadmap(target);
     setActiveRoadmapId(targetId);
     setActiveStep(0);
+    setSidebarOpen(false);
     localStorage.setItem('activeRoadmapId', targetId);
     localStorage.setItem('roadmap', JSON.stringify(target));
 
@@ -164,6 +185,62 @@ export default function Dashboard() {
       setCompletedTasks(JSON.parse(savedTasks));
     } else {
       setCompletedTasks([]);
+    }
+  };
+
+  const deleteRoadmap = (targetId: string, e: MouseEvent) => {
+    e.stopPropagation();
+
+    const target = roadmaps.find((r) => (r.id || "legacy") === targetId);
+    if (!target) return;
+
+    const goalLabel = extractGoal(target.goal);
+    if (
+      !window.confirm(
+        `Delete "Roadmap to become ${goalLabel}"? This cannot be undone.`
+      )
+    ) {
+      return;
+    }
+
+    const updatedRoadmaps = roadmaps.filter(
+      (r) => (r.id || "legacy") !== targetId
+    );
+
+    localStorage.removeItem(`completedTasks_${targetId}`);
+    if (targetId === "legacy") {
+      localStorage.removeItem("completedTasks");
+    }
+    localStorage.setItem("roadmaps", JSON.stringify(updatedRoadmaps));
+    setRoadmaps(updatedRoadmaps);
+
+    if (updatedRoadmaps.length === 0) {
+      setRoadmap(null);
+      setActiveRoadmapId(null);
+      setCompletedTasks([]);
+      setActiveStep(0);
+      localStorage.removeItem("activeRoadmapId");
+      localStorage.removeItem("roadmap");
+      document.cookie =
+        "has_roadmap=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+      setSidebarOpen(false);
+      return;
+    }
+
+    if (targetId === activeRoadmapId) {
+      const next = updatedRoadmaps[0];
+      const nextId = next.id || "legacy";
+      setRoadmap(next);
+      setActiveRoadmapId(nextId);
+      setActiveStep(0);
+      localStorage.setItem("activeRoadmapId", nextId);
+      localStorage.setItem("roadmap", JSON.stringify(next));
+
+      let savedTasks = localStorage.getItem(`completedTasks_${nextId}`);
+      if (!savedTasks && nextId === "legacy") {
+        savedTasks = localStorage.getItem("completedTasks");
+      }
+      setCompletedTasks(savedTasks ? JSON.parse(savedTasks) : []);
     }
   };
 
@@ -251,9 +328,23 @@ export default function Dashboard() {
       )}
 
       {/* Navbar */}
+
       <nav className="dashboard-nav">
-        <div className="dashboard-logo">
-          <img src="/images/PathPilot-logos.png" alt="" />
+        <div className="dashboard-nav-left">
+          <button
+            type="button"
+            className="dashboard-hamburger"
+            onClick={() => setSidebarOpen((open) => !open)}
+            aria-label="Toggle paths menu"
+            aria-expanded={sidebarOpen}
+          >
+            <span className={sidebarOpen ? "active" : ""}></span>
+            <span className={sidebarOpen ? "active" : ""}></span>
+            <span className={sidebarOpen ? "active" : ""}></span>
+          </button>
+          <div className="dashboard-logo">
+            <h1>PathPilot</h1>
+          </div>
         </div>
         <div className="dashboard-nav-right">
           <div className="streak-badge" title={`${streak} day streak`}>
@@ -272,6 +363,9 @@ export default function Dashboard() {
             <UserButton />
           </div>
         </div>
+          <div className="clerk-mobile-profileavatar">
+            <UserButton />
+          </div>
       </nav>
 
       {/* Empty state */}
@@ -290,8 +384,16 @@ export default function Dashboard() {
       {roadmaps.length > 0 && (
         <div className="dashboard-layout-container">
 
+          {sidebarOpen && (
+            <div
+              className="sidebar-overlay"
+              onClick={() => setSidebarOpen(false)}
+              aria-hidden="true"
+            />
+          )}
+
           {/* Sidebar */}
-          <aside className="dashboard-sidebar">
+          <aside className={`dashboard-sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
             <div className="sidebar-header-row">
               <h4 className="sidebar-title">My Paths</h4>
               <span className="ai-active-status">● Live</span>
@@ -302,30 +404,53 @@ export default function Dashboard() {
                 const isActive = rId === activeRoadmapId;
                 const progressVal = getRoadmapProgress(r);
                 return (
-                  <button
+                  <div
                     key={rId}
-                    className={`roadmap-menu-item ${isActive ? 'roadmap-menu-item-active' : ''}`}
-                    onClick={() => switchRoadmap(rId)}
+                    className={`roadmap-menu-item ${isActive ? "roadmap-menu-item-active" : ""}`}
                   >
-                    <span className="roadmap-item-icon"><img src="/images/goal.svg" alt="" /></span>
-                    <div className="roadmap-item-info">
-                      <span className="roadmap-item-title">Roadmap to become {extractGoal(r.goal)}</span>
-                      <span className="roadmap-item-progress-text">{progressVal}% done</span>
-                      <div className="roadmap-item-progress-bar-container">
-                        <div
-                          className="roadmap-item-progress-bar-fill"
-                          style={{ width: `${progressVal}%` }}
-                        ></div>
+                    <button
+                      type="button"
+                      className="roadmap-item-body"
+                      onClick={() => switchRoadmap(rId)}
+                    >
+                      <span className="roadmap-item-icon">
+                        <img src="/images/goal.svg" alt="" />
+                      </span>
+                      <div className="roadmap-item-info">
+                        <span className="roadmap-item-title">
+                          Roadmap to become {extractGoal(r.goal)}
+                        </span>
+                        <span className="roadmap-item-progress-text">
+                          {progressVal}% done
+                        </span>
+                        <div className="roadmap-item-progress-bar-container">
+                          <div
+                            className="roadmap-item-progress-bar-fill"
+                            style={{ width: `${progressVal}%` }}
+                          ></div>
+                        </div>
                       </div>
-                    </div>
-                  </button>
+                    </button>
+                    <button
+                      type="button"
+                      className="roadmap-delete-btn"
+                      onClick={(e) => deleteRoadmap(rId, e)}
+                      aria-label={`Delete path: ${extractGoal(r.goal)}`}
+                      title="Delete path"
+                    >
+                      <img src="/images/trash.svg" alt="" />
+                    </button>
+                  </div>
                 );
               })}
             </div>
 
             <button
               className="sidebar-add-btn"
-              onClick={() => router.push('/onboarding?new=true')}
+              onClick={() => {
+                setSidebarOpen(false);
+                router.push('/onboarding?new=true');
+              }}
             >
               ➕ Create New Path
             </button>
@@ -335,7 +460,17 @@ export default function Dashboard() {
           <main className="dashboard-main-area">
             {roadmap && (
               <div className="dashboard-content">
-
+                <div className="user-details">
+                  <div className="streak-badge" title={`${streak} day streak`}>
+                    <img src="/images/streak.svg" alt="" /> {streak} <span className="badge-text">day streak</span>
+                  </div>
+                  <div className="xp-badge" title={`${xp} XP`}>
+                    <img src="/images/level.svg" alt="" /> {xp} <span className="badge-text">XP</span>
+                  </div>
+                  <div className="level-badge" title={`Level ${level}`}>
+                    Lv.{level}
+                  </div>
+                </div>
                 {/* Hero strip */}
                 <div className="hero-strip">
                   <div className="hero-strip-left">
@@ -389,23 +524,33 @@ export default function Dashboard() {
                       const stepTasks = step.tasks;
                       const stepCompleted = stepTasks.every(t => completedTasks.includes(t));
                       const stepInProgress = stepTasks.some(t => completedTasks.includes(t)) && !stepCompleted;
+                      const unlocked = isStepUnlocked(index);
 
                       return (
                         <div key={step.id} className="timeline-item">
                           <div
                             className={`timeline-node 
-                              ${stepCompleted ? 'node-done' : ''}
-                              ${stepInProgress ? 'node-progress' : ''}
-                              ${activeStep === index ? 'node-active' : ''}
-                            `}
-                            onClick={() => setActiveStep(index)}
+                    ${!unlocked ? 'node-locked' : ''}
+                    ${unlocked && stepCompleted ? 'node-done' : ''}
+                    ${unlocked && stepInProgress ? 'node-progress' : ''}
+                    ${unlocked && activeStep === index ? 'node-active' : ''}
+                `}
+                            onClick={() => {
+                              if (!unlocked) {
+                                alert(`Complete all tasks in Step ${index} first!`);
+                                return;
+                              }
+                              setActiveStep(index);
+                            }}
                           >
-                            {stepCompleted ? '✓' : index + 1}
+                            {!unlocked ? <img src="/images/lock.svg" className="lock-img" alt="" /> : stepCompleted ? '✓' : index + 1}
                           </div>
                           {index < roadmap.steps.length - 1 && (
                             <div className={`timeline-connector ${stepCompleted ? 'connector-done' : ''}`}></div>
                           )}
-                          <div className="timeline-label">{step.title}</div>
+                          <div className={`timeline-label ${!unlocked ? 'label-locked' : ''}`}>
+                            {step.title}
+                          </div>
                         </div>
                       );
                     })}
@@ -425,15 +570,28 @@ export default function Dashboard() {
                     </div>
 
                     <div className="step-selector">
-                      {roadmap.steps.map((step, index) => (
-                        <button
-                          key={step.id}
-                          className={`step-pill ${activeStep === index ? 'step-pill-active' : ''}`}
-                          onClick={() => setActiveStep(index)}
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
+                      {roadmap.steps.map((step, index) => {
+                        const unlocked = isStepUnlocked(index);
+                        return (
+                          <button
+                            key={step.id}
+                            className={`step-pill 
+                    ${activeStep === index ? 'step-pill-active' : ''}
+                    ${!unlocked ? 'step-pill-locked' : ''}
+                `}
+                            onClick={() => {
+                              if (!unlocked) {
+                                alert(`Complete all tasks in Step ${index} first!`);
+                                return;
+                              }
+                              setActiveStep(index);
+                            }}
+                            title={!unlocked ? `Complete Step ${index} first` : step.title}
+                          >
+                            {!unlocked ? <img src="/images/lock.svg" className="lock-img" alt="" /> : index + 1}
+                          </button>
+                        );
+                      })}
                     </div>
 
                     <div className="tasks-list">
@@ -499,10 +657,9 @@ export default function Dashboard() {
           onClick={() => router.push('/onboarding?new=true')}
           title="Create New Career Goal"
         >
-          <span>➕</span>
+          <span><img src="/images/plus.svg" alt="" /></span>
         </button>
       )}
-
-    </div >
+    </div>
   );
 }

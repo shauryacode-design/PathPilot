@@ -43,9 +43,9 @@ body {
     radial-gradient(circle at 10% 20%, rgba(128, 0, 128, 0.729) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, #A67DD4 0%, transparent 45%),
     radial-gradient(circle at 50% 50%, #49375e 0%, #06040a 100%);
-  display: flex;
-  flex-direction: column;
+
   position: relative;
+  /* isolation: isolate; */
 }
 
 /* Custom Scrollbar for modern feel */
@@ -106,40 +106,86 @@ body {
 }
 
 /* ===== HIGH-FIDELITY NAVBAR ===== */
+
 .dashboard-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 40px;
-
   position: sticky;
   top: 0;
   z-index: 100;
+  background: rgba(48, 0, 56, 0.359);
+  backdrop-filter: blur(25px);
+  border-bottom: 2px solid #8d44ad57;
+}
 
-  background: rgba(70, 0, 90, 0.15);
-  /* MUCH more transparent */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+.dashboard-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.dashboard-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.dashboard-hamburger:hover {
+  background: rgba(139, 92, 246, 0.22);
+  border-color: rgba(168, 85, 247, 0.45);
+}
+
+.dashboard-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #d8b4fe;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-hamburger span.active:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.dashboard-hamburger span.active:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.dashboard-hamburger span.active:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.sidebar-overlay {
+  display: none;
 }
 
 .dashboard-logo {
-  font-size: 19px;
-  font-weight: 900;
-  color: white;
-  letter-spacing: 0.12em;
   cursor: pointer;
-  background: linear-gradient(to right, #ffffff 40%, #c4b5fd 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: border-box;
   transition: opacity 0.2s ease;
   margin-left: 20px;
 }
 
-.dashboard-logo img {
-  width: 200px;
-  height: 40px;
+.dashboard-logo h1 {
+  font-size: 22px;
+  color: #d8b4fe;
+  font-weight: 800;
+  letter-spacing: 0.1rem;
+  font-family: "Orbitron", sans-serif;
 }
 
 .dashboard-logo:hover {
@@ -166,9 +212,11 @@ body {
 }
 
 .streak-badge {
-  background: rgba(125, 32, 255, 0.24);
-  color: #b476ff;
-  border-color: rgba(239, 68, 68, 0.15);
+  background: rgba(74, 12, 105, 0.39);
+  color: #fff;
+  border-color: rgba(213, 68, 239, 0.15);
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.04rem;
 }
 
 .streak-badge img {
@@ -176,9 +224,12 @@ body {
 }
 
 .xp-badge {
-  background: rgba(139, 92, 246, 0.1);
-  color: #c4b5fd;
+  letter-spacing: 0.04rem;
+  background: rgba(74, 12, 105, 0.39);
+  color: #fff;
   border-color: rgba(139, 92, 246, 0.15);
+  font-family: "Poppins", sans-serif;
+
 }
 
 .xp-badge img {
@@ -187,11 +238,18 @@ body {
 }
 
 .level-badge {
-  background: var(--gradient-gold);
-  color: #06040a;
+  background: #ddd6fe;
+  color: purple;
   font-weight: 800;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.04rem;
   border: none;
   box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+
+.clerk-mobile-profileavatar {
+  display: none;
 }
 
 .welcome-text {
@@ -288,16 +346,14 @@ body {
 
 .roadmap-menu-item {
   display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 8px;
+  align-items: stretch;
+  gap: 4px;
+  padding: 4px 4px 4px 8px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.058);
   border: 1px solid rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
-  cursor: pointer;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  text-align: left;
   position: relative;
   overflow: hidden;
 }
@@ -306,6 +362,57 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(139, 92, 246, 0.2);
   transform: translateY(-2px);
+}
+
+.roadmap-item-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.roadmap-delete-btn {
+  flex-shrink: 0;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: all 0.2s ease;
+}
+
+.roadmap-delete-btn img {
+  width: 16px;
+  height: 16px;
+  filter: invert(70%) sepia(30%) saturate(500%) hue-rotate(290deg);
+}
+
+.roadmap-menu-item:hover .roadmap-delete-btn,
+.roadmap-delete-btn:focus-visible {
+  opacity: 1;
+}
+
+.roadmap-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.roadmap-delete-btn:hover img {
+  filter: invert(45%) sepia(90%) saturate(2000%) hue-rotate(330deg) brightness(95%);
 }
 
 .roadmap-menu-item-active {
@@ -424,6 +531,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.user-details {
+  display: none;
 }
 
 /* ===== PREMIUM HERO STRIP ===== */
@@ -718,7 +829,8 @@ body {
   color: rgba(128, 0, 128, 0.641);
   text-align: center;
   margin-top: 12px;
-  max-width: 120px;
+  max-width: fit-content;
+
   line-height: 1.4;
   white-space: normal;
 }
@@ -732,6 +844,11 @@ body {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 24px;
+}
+
+.lock-img {
+  width: 22px;
+
 }
 
 /* ===== HIGH-FIDELITY TASKS PANEL ===== */
@@ -1157,6 +1274,20 @@ background-color: red;} */
 @media (max-width: 768px) {
   .dashboard-nav {
     padding: 14px 16px;
+    width: 100%;
+  }
+
+  .dashboard-hamburger {
+    display: flex;
+  }
+
+  .dashboard-logo {
+    margin: 0;
+    height: 100%;
+  }
+
+  .dashboard-logo h1 {
+    font-size: 20px;
   }
 
   .dashboard-nav-right {
@@ -1165,56 +1296,91 @@ background-color: red;} */
 
   .welcome-text {
     display: none;
-    /* Hide welcome text to save space on mobile */
   }
 
   .dashboard-layout-container {
     flex-direction: column;
   }
 
-  /* SIDEBAR TO SLICK HORIZONTAL SCROLLER DRAWER ON MOBILE */
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 4, 10, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    animation: overlayFadeIn 0.3s ease forwards;
+  }
+
+  @keyframes overlayFadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Slide-in drawer sidebar on mobile */
   .dashboard-sidebar {
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-muted);
-    padding: 16px;
-    gap: 12px;
-    position: relative;
+    position: fixed;
     top: 0;
-    backdrop-filter: blur(20px);
+    left: 0;
+    width: min(300px, 85vw);
+    height: 100vh;
+    height: 100dvh;
+    z-index: 300;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid var(--border-muted);
+    border-bottom: none;
+    padding: 24px 16px;
+    padding-top: calc(73px + 20px);
+    gap: 20px;
+    background: rgb(57, 0, 57);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .dashboard-sidebar.sidebar-open {
+    transform: translateX(0);
   }
 
   .roadmaps-list {
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 10px;
-    padding-bottom: 6px;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 12px;
+    padding-bottom: 0;
     width: 100%;
-    scrollbar-width: none;
-    /* Firefox */
-  }
-
-  .roadmaps-list::-webkit-scrollbar {
-    display: none;
-    /* Chrome/Safari */
   }
 
   .roadmap-menu-item {
-    min-width: 220px;
-    flex-shrink: 0;
-    padding: 12px;
+    min-width: unset;
+    flex-shrink: unset;
+    padding: 4px 4px 4px 12px;
+  }
+
+  .roadmap-delete-btn {
+    opacity: 0.65;
+  }
+
+  .roadmap-delete-btn:active {
+    background: rgba(239, 68, 68, 0.2);
+    opacity: 1;
   }
 
   .roadmap-menu-item-active::before {
     left: 0;
     top: 0;
-    height: 3px;
-    width: 100%;
+    height: 100%;
+    width: 4px;
   }
 
   .sidebar-add-btn {
-    margin-top: 0;
+    margin-top: auto;
     width: 100%;
     padding: 12px;
   }
@@ -1276,7 +1442,7 @@ background-color: red;} */
     border-radius: 50% !important;
     /* Make it a sleek circular plus button */
     aspect-ratio: 1;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     width: 34px;
@@ -1393,5 +1559,64 @@ background-color: red;} */
 
   .mobile-fab-add:active {
     transform: scale(0.9);
+  }
+
+  .mobile-fab-add span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-fab-add img {
+    width: 60%;
+  }
+}
+
+@media (max-width:468px) {
+  .dashboard-content {
+    padding-top: 15x;
+  }
+
+  .user-details {
+    display: flex;
+    width: 100%;
+    background-color: rgb(86, 0, 103);
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 8px 0;
+    border-radius: 10px;
+    margin-top: 0;
+    box-shadow: inset 0 0 20px rgb(103, 0, 103);
+  }
+
+  .dashboard-nav-right {
+    display: none;
+  }
+
+  .clerk-mobile-profileavatar {
+    display: block;
+  }
+
+  .streak-badge {
+    background: rgba(44, 7, 62, 0.39);
+    font-family: "Poppins", sans-serif;
+
+  }
+
+  .xp-badge {
+    background: rgba(44, 7, 62, 0.39);
+    font-family: "Poppins", sans-serif;
+
+  }
+
+  .level-badge {
+    background: #ddd6fe;
+    color: purple;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    padding: 6px 14px;
+    letter-spacing: 0.04rem;
   }
 }
