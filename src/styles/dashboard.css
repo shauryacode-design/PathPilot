@@ -421,13 +421,16 @@ body {
   border-radius: 2px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.dashboard-hamburger span:first-child{
+
+.dashboard-hamburger span:first-child {
   width: 25px;
 }
-.dashboard-hamburger span:nth-child(2){
+
+.dashboard-hamburger span:nth-child(2) {
   width: 20px;
 }
-.dashboard-hamburger span:nth-child(3){
+
+.dashboard-hamburger span:nth-child(3) {
   width: 15px;
 }
 
@@ -1729,6 +1732,17 @@ background-color: red;} */
     padding-top: 11px;
     flex: 1;
     max-width: none;
+  }
+
+  .dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .resources-section{
+    width: 100%;
   }
 }
 
