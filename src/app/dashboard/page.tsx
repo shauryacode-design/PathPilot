@@ -754,7 +754,7 @@ export default function Dashboard() {
                             className={`step-pill 
                     ${activeStep === index ? 'step-pill-active' : ''}
                     ${!unlocked ? 'step-pill-locked' : ''}
-                `}
+                 `}
                             onClick={() => {
                               if (!unlocked) {
                                 alert(`Complete all tasks in Step ${index} first!`);

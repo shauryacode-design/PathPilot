@@ -1119,6 +1119,8 @@ body {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 24px;
+  /* background-color: red; */
+  width: 100%;
 }
 
 .lock-img {
