@@ -353,7 +353,7 @@ export default function Onboarding() {
                                 onClick={handleGenerate}
                                 disabled={isLoading}
                             >
-                                {isLoading ? '⏳ Generating...' : '🚀 Generate My Roadmap'}
+                                {isLoading ? 'Generating...' : 'Generate My Roadmap'}
                             </button>
                         )}
                     </div>
