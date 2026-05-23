@@ -1120,7 +1120,7 @@ body {
   grid-template-columns: 1fr 1.3fr;
   gap: 24px;
   /* background-color: red; */
-  width: 100%;
+  /* width: 100%; */
 }
 
 .lock-img {
@@ -1544,7 +1544,11 @@ background-color: red;} */
    ========================================================================== */
 @media (max-width: 1024px) {
   .dashboard-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
 }
 
