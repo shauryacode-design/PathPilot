@@ -1,22 +1,35 @@
-"use client"
-import Image from "next/image";
-import Hero from "../components/hero";
-import Works from "../components/how-it-works";
-// import HowWorks from "../components/how-it-works";
-import RdmapPreview from "../components/rdmap-preview";
-import Testimonials from "../components/testimonials";
-import Footer from "../components/footer";
+import HomePage from "@/src/components/home-page";
+import JsonLd from "@/src/components/json-ld";
+import {
+  createMetadata,
+  getOrganizationJsonLd,
+  getWebApplicationJsonLd,
+  getWebsiteJsonLd,
+  siteConfig,
+} from "@/src/lib/seo";
 
+export const metadata = createMetadata({
+  title: siteConfig.title,
+  description: siteConfig.description,
+  path: "/",
+  keywords: [
+    ...siteConfig.keywords,
+    "free career roadmap generator",
+    "AI learning path for students",
+  ],
+});
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="whole">
-      <Hero />
-      <Works/>
-      <RdmapPreview/>
-      <Testimonials/>
-      <Footer/>
-      
-    </div>
+    <>
+      <JsonLd
+        data={[
+          getOrganizationJsonLd(),
+          getWebApplicationJsonLd(),
+          getWebsiteJsonLd(),
+        ]}
+      />
+      <HomePage />
+    </>
   );
 }

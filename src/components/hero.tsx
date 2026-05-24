@@ -42,7 +42,10 @@ export default function Home() {
             <h1>The Path.</h1>
           </div>
         </div>
-        <img src="/images/main-img-2.png" alt="" />
+        <img
+          src="/images/main-img-2.png"
+          alt="PathPilot AI career roadmap illustration for students"
+        />
         <div className="subtext-CTA">
           <p>Get a personalized step-by-step roadmap based on your <span style={{ color: "#7B3FBE", fontWeight: "600" }}>skills</span>, <span style={{ color: "#7B3FBE", fontWeight: "600" }}>interests</span>, and <span style={{ color: "#7B3FBE", fontWeight: "600" }}> goals</span> — no more guesswork.</p>
           <SignInButton>
