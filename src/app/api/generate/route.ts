@@ -371,6 +371,164 @@ function getDemoRoadmap(formData: any) {
     totalTasks: 12,
   };
 }
+function detectCareerType(goal: string) {
+  const lowerGoal = goal.toLowerCase();
+
+  if (
+    lowerGoal.includes("developer") ||
+    lowerGoal.includes("software") ||
+    lowerGoal.includes("web") ||
+    lowerGoal.includes("ai") ||
+    lowerGoal.includes("data scientist") ||
+    lowerGoal.includes("programmer")
+  ) {
+    return "tech";
+  }
+
+  if (
+    lowerGoal.includes("upsc") ||
+    lowerGoal.includes("ias") ||
+    lowerGoal.includes("ips") ||
+    lowerGoal.includes("government") ||
+    lowerGoal.includes("ssc") ||
+    lowerGoal.includes("bank po") ||
+    lowerGoal.includes("income tax officer")
+  ) {
+    return "government_exam";
+  }
+
+  if (
+    lowerGoal.includes("designer") ||
+    lowerGoal.includes("ui/ux") ||
+    lowerGoal.includes("graphic")
+  ) {
+    return "creative";
+  }
+
+  if (
+    lowerGoal.includes("doctor") ||
+    lowerGoal.includes("medical") ||
+    lowerGoal.includes("neet")
+  ) {
+    return "medical";
+  }
+
+  if (
+    lowerGoal.includes("ca") ||
+    lowerGoal.includes("accountant") ||
+    lowerGoal.includes("finance")
+  ) {
+    return "finance";
+  }
+
+  if (
+    lowerGoal.includes("lawyer") ||
+    lowerGoal.includes("judge") ||
+    lowerGoal.includes("law")
+  ) {
+    return "law";
+  }
+
+  if (
+    lowerGoal.includes("youtuber") ||
+    lowerGoal.includes("content creator") ||
+    lowerGoal.includes("influencer")
+  ) {
+    return "creator";
+  }
+
+  return "general";
+}
+
+function getCareerRules(careerType: string) {
+  switch (careerType) {
+    case "tech":
+      return `
+Focus on:
+- coding skills
+- projects
+- GitHub
+- deployment
+- portfolio building
+- internships
+- DSA
+`;
+
+    case "government_exam":
+      return `
+Focus on:
+- exam syllabus
+- mock tests
+- PYQs
+- revision strategy
+- current affairs
+- time management
+- subject-wise preparation
+
+NEVER include:
+- coding projects
+- deployment
+- GitHub
+`;
+
+    case "creative":
+      return `
+Focus on:
+- portfolio design
+- creativity exercises
+- client projects
+- design tools
+- visual practice
+`;
+
+    case "medical":
+      return `
+Focus on:
+- entrance preparation
+- clinical understanding
+- practical study
+- revision cycles
+- subject mastery
+`;
+
+    case "finance":
+      return `
+Focus on:
+- accounting concepts
+- certifications
+- internships
+- financial analysis
+- practical finance tools
+`;
+
+    case "law":
+      return `
+Focus on:
+- legal concepts
+- case studies
+- judiciary exams
+- legal drafting
+- internships
+`;
+
+    case "creator":
+      return `
+Focus on:
+- content creation
+- audience growth
+- storytelling
+- editing skills
+- platform consistency
+- monetization
+`;
+
+    default:
+      return `
+Create a highly practical and goal-specific roadmap.
+Avoid generic tasks.
+`;
+  }
+}
 
 // ==============================
 // MAIN API ROUTE
@@ -393,6 +551,12 @@ export async function POST(req: Request) {
 
     console.log("🚀 Generating roadmap...");
 
+    const careerType = detectCareerType(goal);
+
+    const careerRules = getCareerRules(careerType);
+
+    console.log("🎯 Career Type:", careerType);
+
     // ==============================
     // AI PROMPT
     // ==============================
@@ -406,8 +570,7 @@ The roadmap must:
 - be logically sequenced
 - be beginner-friendly if needed
 - focus on real-world skills
-- include practical project-building
-- include job-ready preparation
+
 - avoid generic advice
 
 ========================
@@ -487,6 +650,21 @@ Use trusted platforms like:
 10. Make the roadmap feel motivating and premium.
 
 ========================
+CAREER-SPECIFIC RULES
+========================
+
+Career Type: ${careerType}
+
+${careerRules}
+
+IMPORTANT:
+- The roadmap MUST feel unique to this career path.
+- Do NOT generate repetitive universal tasks.
+- Different career goals must produce very different roadmap structures.
+- NEVER force coding/project/deployment tasks into non-technical careers.
+- The roadmap should feel professionally designed specifically for this student's goal.
+
+========================
 RETURN FORMAT
 ========================
 
@@ -522,7 +700,18 @@ Use this exact structure:
   "totalTasks": 0
 }
 `;
+    const bannedGoals = [
+      "become batman",
+      "destroy world",
+      "time travel",
+    ];
 
+    if (bannedGoals.includes(goal.toLowerCase())) {
+      return NextResponse.json({
+        success: false,
+        error: "Please enter a realistic career goal.",
+      });
+    }
     // ==============================
     // TRY OPENROUTER AI
     // ==============================
