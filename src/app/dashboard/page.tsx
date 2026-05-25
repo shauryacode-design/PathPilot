@@ -525,7 +525,7 @@ export default function Dashboard() {
           <h2>No Roadmap Yet</h2>
           <p>Generate your first personalized roadmap to get started</p>
           <button className="btn-generate" onClick={() => router.push('/onboarding')}>
-            🚀 Generate My Roadmap
+            Generate My Roadmap
           </button>
         </div>
       )}
